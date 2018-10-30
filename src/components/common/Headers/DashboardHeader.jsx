@@ -1,6 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import DashboardNavbarComponent from './Navbars/DashboardNavbar';
+import DashboardHeaderContent from './headercontent/DashboardHeaderContent';
 
 
-// const DashboardHeader = () => ();
+const DashboardHeader = () => (
+  <header className="dashboard__header bg--color--white">
+    <div className="header__nav">
+      <DashboardNavbarComponent />
+      <DashboardHeaderContent />
+    </div>
+  </header>
+);
 
+export default DashboardHeader;
