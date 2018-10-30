@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    -node_modules
+    - ~/.npm
+    - ~/.cache
+  install:
+  - npm ci
+script:
+  - webpack-dev-server & $(npm bin)/cypress run
+    

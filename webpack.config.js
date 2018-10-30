@@ -7,6 +7,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    chunkFilename: '[id].js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -27,9 +29,11 @@ module.exports = {
     ],
   },
   plugins: [new HtmlWebpackPlugin({
-    title: 'Ridemyway',
-    template: './public/index.html',
-  })],
+    template: 'public/index.html',
+    filename: 'index.html',
+    inject: 'body',
+  }),
+  ],
   resolve: {
     extensions: ['.jsx', '.js'],
     alias: {
