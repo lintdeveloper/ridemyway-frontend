@@ -1,26 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const DashboardHeaderContent = () => (
   <div className="dashboard__header__bottom bg--color--primary">
     <div className="container-fluid">
       <ul className="nav navbar__right navbar__nav">
         <li>
-          <a href="summary.html" className="active">
+          <Link to="/dashboard/summary" className="active">
                   Summary
             <hr className="active--indicator" />
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="rideoffers.html" className="notification">
+          <Link to="/dashboard/rides" className="notification">
                   Ride Offers
             <hr className="active--indicator" />
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="riderequest.html">
+          <Link to="riderequest.html">
                   Ride Requests
             <hr className="active--indicator" />
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

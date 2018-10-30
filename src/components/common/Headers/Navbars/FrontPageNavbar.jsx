@@ -23,7 +23,7 @@ const FrontPageNavbarComponent = () => (
           <Link to="/about">About</Link>
         </li>
         <li>
-          <Link to="/signin">Login</Link>
+          <Link to="/login">Login</Link>
         </li>
         <li>
           <Link to="/signup" className="btn btn--secondary btn--round sticky--sign--up" href="createaccount.html">Sign Up</Link>

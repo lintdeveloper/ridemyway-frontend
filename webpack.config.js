@@ -19,7 +19,7 @@ module.exports = {
       },
       { test: /\.s?css$/, use: ['style-loader', 'css-loader'] },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif)$/,
         use: [
           {
             loader: 'file-loader',
@@ -43,7 +43,6 @@ module.exports = {
       components: path.resolve(__dirname, 'src/components'),
     },
   },
-  devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'client/public'),
     port: 3500,
