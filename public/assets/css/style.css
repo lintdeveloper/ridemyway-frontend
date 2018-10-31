@@ -20,7 +20,11 @@ body {
 a,
 a:hover,
 a:focus,
-a:active {
+a:active,
+Link,
+Link:hover,
+Link:focus,
+Link:active {
   text-decoration: none;
 }
 

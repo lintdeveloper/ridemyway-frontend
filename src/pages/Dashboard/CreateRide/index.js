@@ -2,10 +2,19 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import dummy from 'images/ME.jpeg';
 import DashboardHeader from '../../../components/common/Headers/DashboardHeader';
 
-
+const handleOnSubmit = (event) => {
+  event.preventDefault();
+  const formData = {}
+  const FD = new FormData(event.target);
+  for(var pair of FD.entries()) {
+    formData[pair[0]] = pair[1];
+  }
+  
+}
 const CreateRideOffer = props => (
   <div className="wrapper dashboard--bg--grey">
     <DashboardHeader />
@@ -28,13 +37,12 @@ const CreateRideOffer = props => (
         <div className="RideDetail__header">
           <div className="RideInfo__header">
             <div className="RideInfo__header__img text--center">
-              <img src={dummy} className="profile" alt="offerer profile" />
               <h3 className="text--primary"> Create a ride offer</h3>
               <h5 className="text--color--grey font--regular">Where are you heading to?</h5>
             </div>
           </div>
           <div className="RideInfo__content text--center margin--top--10">
-            <form>
+            <form onSubmit={handleOnSubmit}>
               <p className="js__errMsg" />
               <div className="input--group dashboard--input">
                 <input type="text" className="form--control" placeholder="From(Your current location)" name="location" />
@@ -65,5 +73,6 @@ const CreateRideOffer = props => (
 
   </div>
 );
+
 
 export default CreateRideOffer;

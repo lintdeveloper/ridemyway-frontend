@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import DashboardHeader from '../../../components/common/Headers/DashboardHeader';
+const dummy = 'https://res.cloudinary.com/dbsxxymfz/image/upload/v1536757459/dummy-profile.png';
 
 
 const Summary = props => (
@@ -26,20 +28,20 @@ const Summary = props => (
         <div className="metric light--shadow">
           <div className="divider--three">
             <div className="card__user">
-              <img src="assets/img/ME.jpeg" className="card__user__pics" alt="User character" />
+              <img src={dummy} className="card__user__pics" alt="User character" />
             </div>
           </div>
           <div className="divider--three vertical--center">
             <div className="card__user__widget">
               <h3 className="DashboardColor--text--grey">Hi Joeeasy!</h3>
-              <form action="findride.html">
+              <Link to="/dashboard/rides/">
                 <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary">Discover ride offers</button>
-              </form>
+              </Link>
             </div>
           </div>
           <div className="divider--three vertical--center">
             <div className="CreateRide">
-              <Link to="createoffer.html">
+              <Link to="/dashboard/createride">
                 <i className="fab fa-slideshare fa-3x DashboardColor--text--primary" />
                 <h4 className="DashboardColor--text--grey margin-left--10">Offer A Ride</h4>
               </Link>
