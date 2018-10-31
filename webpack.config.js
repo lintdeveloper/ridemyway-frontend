@@ -43,6 +43,7 @@ module.exports = {
       components: path.resolve(__dirname, 'src/components'),
     },
   },
+  devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'client/public'),
     port: 3500,
