@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import DashboardHeader from '../../../components/common/Headers/DashboardHeader';
 const dummy = 'https://res.cloudinary.com/dbsxxymfz/image/upload/v1536757459/dummy-profile.png';
 
-
 const Summary = props => (
   <div className="wrapper dashboard--bg--grey">
     <DashboardHeader />
