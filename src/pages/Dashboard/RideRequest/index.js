@@ -1,211 +1,102 @@
 
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import dummy from 'images/ME.jpeg';
+import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 import DashboardHeader from '../../../components/common/Headers/DashboardHeader';
+import { fetchRequest } from '../../../store/actions/rides';
 
+const dummy = 'https://res.cloudinary.com/dbsxxymfz/image/upload/v1536757459/dummy-profile.png';
 
-const RideRequest = props => (
-  <div className="wrapper dashboard--bg--grey">
-    <DashboardHeader />
-    <div className="container-fluid">
-      <div className="subheader">
-        <h3 className="DashboardColor--text--grey">Dashboard</h3>
-        <ul className="nav navbar__nav">
-          <li>
-            <Link to="#">
-              <i className="fas fa-home" />
-            </Link>
-          </li>
-          <li>-</li>
-          <li>
-            <Link to="#">RideRequest</Link>
-          </li>
-        </ul>
-      </div>
-      <div className="RideRequest__heading">
-        <div className="SearchRide light--shadow">
-          <div className="SearchRide__heading">
-            <h3 className="text--center margin--bottom--20 DashboardColor--text--grey">Search ride requests</h3>
-          </div>
-          <div className="SearchRide__content">
-            <form action="#">
-              <div className="form--group full--width">
-                <input type="text" className="dashboard--input form--control" placeholder="Place" />
-              </div>
-              <div className="form--group">
-                <button className="searchbtn btn btn--round DashboardColor--bg--primary" type="submit">
-Find
-                  <i className="fas fa-chevron-right slide padding--left--5" />
-                </button>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-      <div className="RideRequest">
-        <div className="RideDetails light--shadow">
-          <div className="RideDetail__header">
-            <div className="RideInfo__header">
-              <div className="RideInfo__header__img text--center">
-                <img src="assets/img/ME.jpeg" alt="offerer profile" />
-                <h4 className="text--primary">Heading towards mile 2</h4>
-                <h5 className="text--color--grey font--regular">Jehonadab Okpukoro wants to join you</h5>
-              </div>
-            </div>
-            <div className="RideInfo__content text--center margin--top--10">
-              <div className="text--color--grey">Computer village Ikeja</div>
-              <div>
-                <i className="fas fa-arrow-down text--primary margin--10" />
-              </div>
-              <div className="text--color--grey">Yaba</div>
-              <form action="/summary.html" className="RideForm">
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
-                </div>
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
-                </div>
-              </form>
-            </div>
+class RideRequest extends Component {
+  componentDidMount = () => {
+    const { rideId }  = this.props.match.params;
+   const { history, fetchRequest } = this.props;
+   return fetchRequest(rideId, history);
+  }
+  renderRideRequest = (riderequests) => riderequests.map(riderequest =>(
+    <div className="RideDetails light--shadow">
+      <div className="RideDetail__header">
+        <div className="RideInfo__header">
+          <div className="RideInfo__header__img text--center">
+            <img src={riderequest.rideownerInfo.profile} alt="offerer profile" />
+            <h4 className="text--primary">{riderequest.rideOffer.rideTitle}</h4>
+            <h5 className="text--color--grey font--regular">{riderequest.rideownerInfo.firstName + ' ' + riderequest.rideownerInfo.lastName}</h5>
           </div>
         </div>
-        <div className="RideDetails light--shadow">
-          <div className="RideDetail__header">
-            <div className="RideInfo__header">
-              <div className="RideInfo__header__img text--center">
-                <img src="assets/img/ME.jpeg" alt="offerer profile" />
-                <h4 className="text--primary">Heading towards mile 2</h4>
-                <h5 className="text--color--grey font--regular">Jehonadab Okpukoro wants to join you</h5>
-              </div>
-            </div>
-            <div className="RideInfo__content text--center margin--top--10">
-              <div className="text--color--grey">Computer village Ikeja</div>
-              <div>
-                <i className="fas fa-arrow-down text--primary margin--10" />
-              </div>
-              <div className="text--color--grey">Yaba</div>
-              <form action="/summary.html" className="RideForm">
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
-                </div>
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
-                </div>
-              </form>
-            </div>
+        <div className="RideInfo__content text--center margin--top--10">
+          <div className="text--color--grey">{riderequest.rideOffer.location}</div>
+          <div>
+            <i className="fas fa-arrow-down text--primary margin--10" />
           </div>
-        </div>
-        <div className="RideDetails light--shadow">
-          <div className="RideDetail__header">
-            <div className="RideInfo__header">
-              <div className="RideInfo__header__img text--center">
-                <img src="assets/img/ME.jpeg" alt="offerer profile" />
-                <h4 className="text--primary">Heading towards mile 2</h4>
-                <h5 className="text--color--grey font--regular">Jehonadab Okpukoro wants to join you</h5>
-              </div>
+          <div className="text--color--grey">{riderequest.rideOffer.destination}</div>
+          <form action="/summary.html" className="RideForm">
+            <div>
+              <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
             </div>
-            <div className="RideInfo__content text--center margin--top--10">
-              <div className="text--color--grey">Computer village Ikeja</div>
-              <div>
-                <i className="fas fa-arrow-down text--primary margin--10" />
-              </div>
-              <div className="text--color--grey">Yaba</div>
-              <form action="/summary.html" className="RideForm">
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
-                </div>
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
-                </div>
-              </form>
+            <div>
+              <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
             </div>
-          </div>
-        </div>
-        <div className="RideDetails light--shadow">
-          <div className="RideDetail__header">
-            <div className="RideInfo__header">
-              <div className="RideInfo__header__img text--center">
-                <img src="assets/img/ME.jpeg" alt="offerer profile" />
-                <h4 className="text--primary">Heading towards mile 2</h4>
-                <h5 className="text--color--grey font--regular">Jehonadab Okpukoro wants to join you</h5>
-              </div>
-            </div>
-            <div className="RideInfo__content text--center margin--top--10">
-              <div className="text--color--grey">Computer village Ikeja</div>
-              <div>
-                <i className="fas fa-arrow-down text--primary margin--10" />
-              </div>
-              <div className="text--color--grey">Yaba</div>
-              <form action="/summary.html" className="RideForm">
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
-                </div>
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div className="RideDetails light--shadow">
-          <div className="RideDetail__header">
-            <div className="RideInfo__header">
-              <div className="RideInfo__header__img text--center">
-                <img src="assets/img/ME.jpeg" alt="offerer profile" />
-                <h4 className="text--primary">Heading towards mile 2</h4>
-                <h5 className="text--color--grey font--regular">Jehonadab Okpukoro wants to join you</h5>
-              </div>
-            </div>
-            <div className="RideInfo__content text--center margin--top--10">
-              <div className="text--color--grey">Computer village Ikeja</div>
-              <div>
-                <i className="fas fa-arrow-down text--primary margin--10" />
-              </div>
-              <div className="text--color--grey">Yaba</div>
-              <form action="/summary.html" className="RideForm">
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
-                </div>
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div className="RideDetails light--shadow">
-          <div className="RideDetail__header">
-            <div className="RideInfo__header">
-              <div className="RideInfo__header__img text--center">
-                <img src="assets/img/ME.jpeg" alt="offerer profile" />
-                <h4 className="text--primary">Heading towards mile 2</h4>
-                <h5 className="text--color--grey font--regular">Jehonadab Okpukoro wants to join you</h5>
-              </div>
-            </div>
-            <div className="RideInfo__content text--center margin--top--10">
-              <div className="text--color--grey">Computer village Ikeja</div>
-              <div>
-                <i className="fas fa-arrow-down text--primary margin--10" />
-              </div>
-              <div className="text--color--grey">Yaba</div>
-              <form action="/summary.html" className="RideForm">
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
-                </div>
-                <div>
-                  <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
-                </div>
-              </form>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
+  ));
+  render() {
+    const { loading, riderequests } = this.props;
+    console.log('this.props :', this.props);
+    return (
+      <div className="wrapper dashboard--bg--grey">
+        <DashboardHeader />
+        <div className="container-fluid">
+          <div className="subheader">
+            <h3 className="DashboardColor--text--grey">Dashboard</h3>
+            <ul className="nav navbar__nav">
+              <li>
+                <Link to="#">
+                  <i className="fas fa-home" />
+                </Link>
+              </li>
+              <li>-</li>
+              <li>
+                <Link to="#">RideRequest</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="SearchRide__heading">
+            <h3 className="text--center margin--bottom--20 DashboardColor--text--grey">Ride requests</h3>
+          </div>
+          <div className="RideRequest">
+            {!loading && (riderequests.length > 0)
+            ? this.renderRideRequest(riderequests)
+            : <div className="text--center" style={{ display: 'flex' }}>
+              <Loader
+                type="CradleLoader"
+                color="#00BFFF"
+                height="100"
+                width="100"
+              />
+            </div>
+          }
+            </div>
+        </div>
+    
+      </div>
+    );
+  }
+}
 
-  </div>
-);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchRequest: (userId, history) => {
+      dispatch(fetchRequest(userId, history))
+    }
+  }
+}
 
-export default RideRequest;
+const mapStateToProps = ({rides}) =>{
+  console.log('rides :', rides);
+  return ({...rides})
+}
+export default connect(mapStateToProps, mapDispatchToProps)(RideRequest);

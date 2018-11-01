@@ -6,7 +6,10 @@ const {
   CREATE_ACCOUNT_ERROR,
   LOGIN,
   LOGIN_SUCCESS,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  GET_USER,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR
 } = constants;
 
 
@@ -30,6 +33,25 @@ const user = (state = intialState, { type, payload }) => {
         isAuthenticated: true,
       };
     case CREATE_ACCOUNT_ERROR || LOGIN_ERROR:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: false,
+        message: payload
+      };
+    case GET_USER:
+      return {
+        ...state,
+        loading: true
+      };
+    case GET_USER_SUCCESS:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+        isAuthenticated: true,
+      };
+    case GET_USER_ERROR:
       return {
         ...state,
         loading: false,
