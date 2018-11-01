@@ -15,7 +15,11 @@ const {
   JOIN_RIDE_SUCCESS,
   CREATE_RIDE,
   CREATE_RIDE_ERROR,
-  CREATE_RIDE_SUCCESS
+  CREATE_RIDE_SUCCESS,
+  GET_REQUEST,
+  GET_REQUEST_SUCCESS,
+  GET_REQUEST_ERROR,
+
 } = constants;
 let token = null;
 let currentUserId = null;
@@ -27,6 +31,7 @@ if (user) {
 }
 
 const getRides = history => (dispatch) => {
+  console.log('token :', token);
   showLoading(dispatch, GET_RIDES);
   axios.get('/rides', {
     headers: {
@@ -42,6 +47,7 @@ const getRides = history => (dispatch) => {
   })
     .catch((err) => {
       if (err.response) {
+        console.log('err.response :', err.response);
         if (err.response.status === 404) {
           dispatch({
             type: GET_RIDES_ERROR,
@@ -197,6 +203,95 @@ const createRide = (FormData, history) => (dispatch) => {
       }
     });
 };
+
+const fetchRequest = (rideId, history) => (dispatch) => {
+  const payload = {};
+  payload.riderequests = [];
+  showLoading(dispatch, GET_REQUEST);
+  axios.get(`/users//rides/${rideId}/requests`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then((riderequests) => {
+    riderequests.data.data.riderequests.forEach((riderequest) => {
+      axios.get(`/rides/${riderequest.rideId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(rideOffer => axios.get(`/profile/${riderequest.rideOwnerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((result) => {
+        console.log('result :', result);
+        console.log('rideOffer :', rideOffer);
+        payload.riderequests.push({
+          rideOffer: rideOffer.data.data.rideOffer,
+          rideownerInfo: result.data.data.user
+        });
+        return dispatch({
+          type: GET_REQUEST_SUCCESS,
+          payload,
+        });
+      })
+        .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 404) {
+              dispatch({
+                type: GET_SINGLE_RIDE_ERROR,
+                payload: err.response.data.data.message,
+              });
+              return swal('Failed!', err.response.data.data.message, 'warning');
+            }
+            if (err.response.status === 401) {
+              dispatch({
+                type: GET_SINGLE_RIDE_ERROR,
+                payload: [],
+              });
+              return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
+            }
+          }
+        }))
+        .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 404) {
+              dispatch({
+                type: GET_SINGLE_RIDE_ERROR,
+                payload: err.response.data.data.message,
+              });
+              return swal('Failed!', err.response.data.data.message, 'warning');
+            }
+            if (err.response.status === 401) {
+              dispatch({
+                type: GET_SINGLE_RIDE_ERROR,
+                payload: [],
+              });
+              return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
+            }
+          }
+        });
+    });
+    console.log('payload :', payload);
+  })
+    .catch((err) => {
+      if (err.response) {
+        if (err.response.status === 404) {
+          dispatch({
+            type: GET_REQUEST_ERROR,
+            payload: err.response.data.data.message,
+          });
+          return swal('Failed!', err.response.data.data.message, 'warning');
+        }
+        if (err.response.status === 401) {
+          dispatch({
+            type: GET_REQUEST_ERROR,
+            payload: [],
+          });
+          return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
+        }
+      }
+    });
+};
 export {
-  getRides, getSingleRide, joinRide, createRide
+  getRides, getSingleRide, joinRide, createRide, fetchRequest
 };

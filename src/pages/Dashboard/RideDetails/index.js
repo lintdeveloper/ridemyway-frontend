@@ -109,7 +109,7 @@ class RideDetails extends Component {
                       )
                       : (
                         <div style={{ display: 'flex' }}>
-                          <Link to={`/dashboard/rides/request/${rideOffer.id}`}>
+                          <Link to={`/dashboard/rides/${rideOffer.id}/requests`}>
                             <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">View ride request</button>
                           </Link>
                         </div>
