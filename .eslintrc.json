@@ -1,10 +1,7 @@
 {
 	"extends": "airbnb",
-	"parser": "babel-eslint",
-	"plugins": ["cypress"],
 	"env": {
-		"browser": true,
-		"cypress/globals": true
+		"browser": true
 	},
 	"parserOptions": {
 		"ecmaVersion": 2018,

@@ -2,13 +2,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
 import DashboardHeader from '../../../components/common/Headers/DashboardHeader';
 import { getRides } from '../../../store/actions/rides'
 
 class RideOffer extends Component {
-  componentDidMount = () => {
-    const { getRides } =  this.props;
-    getRides();    
+  componentDidMount() {
+    const { getRides, history } =  this.props;
+    getRides(history);    
   }
 
   renderRideOffers = (offers) => offers.map(offer => (
@@ -49,7 +50,7 @@ Available Seats:
   ))
   
   render() {
-   const { rideOffers } = this.props;
+   const { rideOffers, loading } = this.props;
     return (
       <div className="wrapper dashboard--bg--grey">
         <DashboardHeader />
@@ -77,7 +78,23 @@ Available Seats:
                   <h2 className="DashboardColor--text--grey text--center">Ride Offers</h2>
                 </div>
                 <div className="SearchResult__content">
-                {this.renderRideOffers(rideOffers)}
+                {
+                  (!loading) 
+                  ? (rideOffers.length > 0) ? this.renderRideOffers(rideOffers)
+                  : <div className="RideDetails light--shadow">
+                  <div className="RideDetail__header">
+                    <div className="RideInfo__content text--center margin--top--10">
+                    <h3>No ride offer found</h3>
+                    </div>
+                    </div>
+                    </div>
+                  : <Loader
+                      type="CradleLoader"
+                      color="#00BFFF"
+                      height="100"	
+                      width="100"
+                    />
+                }
                 </div>
               </div>
             </div>
@@ -96,7 +113,7 @@ const mapStateToProps = ({ rides }, ownProps) => ({
 })
 const mapDispatchToProps = (dispatch) => {
   return ({
-    getRides: () => dispatch(getRides())
+    getRides: (history) => dispatch(getRides(history))
   });
 }
 
