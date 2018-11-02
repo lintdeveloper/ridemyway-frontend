@@ -20,7 +20,6 @@ const joinRide = (state = intialState, { type, payload }) => {
       };
     case JOIN_RIDE_SUCCESS:
       return {
-        ...state,
         ...payload,
         loading: false,
         isAuthenticated: true,
@@ -28,7 +27,7 @@ const joinRide = (state = intialState, { type, payload }) => {
     case JOIN_RIDE_ERROR:
       return {
         ...state,
-        loading: true
+        loading: false
       };
     default:
       return state;

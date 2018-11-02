@@ -21,13 +21,15 @@ const intialState = {
 const user = (state = intialState, { type, payload }) => {
   switch (type) {
     case CREATE_ACCOUNT || LOGIN:
+      console.log('========== I am getting here ===============');
+
       return {
         ...state,
-        loading: true
+        ...{ loading: true }
       };
     case CREATE_ACCOUNT_SUCCESS || LOGIN_SUCCESS:
+      console.log('========== I am getting here ===============');
       return {
-        ...state,
         ...payload,
         loading: false,
         isAuthenticated: true,
@@ -59,6 +61,8 @@ const user = (state = intialState, { type, payload }) => {
         message: payload
       };
     default:
+      console.log('========== I am getting here ===============');
+
       return state;
   }
 };

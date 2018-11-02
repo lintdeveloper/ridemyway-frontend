@@ -22,7 +22,6 @@ const intialState = {
 };
 
 const rides = (state = intialState, { type, payload }) => {
-  console.log('type :', type);
   switch (type) {
     case GET_RIDES || GET_SINGLE_RIDE || GET_REQUEST:
       return {
