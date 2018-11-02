@@ -73,7 +73,7 @@ class RideRequest extends Component {
             <h3 className="text--center margin--bottom--20 DashboardColor--text--grey">Ride requests</h3>
           </div>
           <div className="RideRequest">
-            {!loading && (riderequests.length > 0)
+            {!loading && (riderequests)
             ? this.renderRideRequest(riderequests)
             : <div className="text--center" style={{ display: 'flex' }}>
               <Loader
