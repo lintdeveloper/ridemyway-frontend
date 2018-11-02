@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Loader from 'react-loader-spinner';
 import DashboardHeader from '../../../components/common/Headers/DashboardHeader';
-import { fetchRequest } from '../../../store/actions/rides';
+import { fetchRequest, respondToRide } from '../../../store/actions/rides';
 
 const dummy = 'https://res.cloudinary.com/dbsxxymfz/image/upload/v1536757459/dummy-profile.png';
 
@@ -15,14 +15,20 @@ class RideRequest extends Component {
    const { history, fetchRequest } = this.props;
    return fetchRequest(rideId, history);
   }
+  handleRequest = (event) => {
+    const { history, respondToRide, riderequests } = this.props;
+    const { rideId } = this.props.match.params;
+    const status = event.target.value;
+    respondToRide(history, rideId, riderequests.forEach(riderequest => riderequest.id), status)
+  }
   renderRideRequest = (riderequests) => riderequests.map(riderequest =>(
     <div className="RideDetails light--shadow">
       <div className="RideDetail__header">
         <div className="RideInfo__header">
           <div className="RideInfo__header__img text--center">
-            <img src={riderequest.rideownerInfo.profile} alt="offerer profile" />
+            <img src={riderequest.rideownerInfo.profile || dummy} alt="offerer profile" />
             <h4 className="text--primary">{riderequest.rideOffer.rideTitle}</h4>
-            <h5 className="text--color--grey font--regular">{riderequest.rideownerInfo.firstName + ' ' + riderequest.rideownerInfo.lastName}</h5>
+            <h5 className="text--color--grey font--regular">{riderequest.rideownerInfo.firstName + ' ' + riderequest.rideownerInfo.lastName + ' wants to join you'}</h5>
           </div>
         </div>
         <div className="RideInfo__content text--center margin--top--10">
@@ -31,12 +37,12 @@ class RideRequest extends Component {
             <i className="fas fa-arrow-down text--primary margin--10" />
           </div>
           <div className="text--color--grey">{riderequest.rideOffer.destination}</div>
-          <form action="/summary.html" className="RideForm">
+          <form className="RideForm">
             <div>
-              <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10">Accept</button>
+              <button type="button" className="DashboardBtn btn--round DashboardColor--bg--primary margin--top--10" value="accepted" onClick={this.handleRequest}>Accept</button>
             </div>
             <div>
-              <button type="submit" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10">Decline</button>
+              <button type="button" className="DashboardBtn btn--round DashboardColor--bg--grey margin--top--10" value="rejected" onClick={this.handleRequest}>Decline</button>
             </div>
           </form>
         </div>
@@ -45,7 +51,6 @@ class RideRequest extends Component {
   ));
   render() {
     const { loading, riderequests } = this.props;
-    console.log('this.props :', this.props);
     return (
       <div className="wrapper dashboard--bg--grey">
         <DashboardHeader />
@@ -91,12 +96,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchRequest: (userId, history) => {
       dispatch(fetchRequest(userId, history))
-    }
+    },
+    respondToRide: (history, rideId, requestId, status) =>  dispatch(respondToRide(history, rideId, requestId, status))
   }
 }
 
 const mapStateToProps = ({rides}) =>{
-  console.log('rides :', rides);
   return ({...rides})
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RideRequest);

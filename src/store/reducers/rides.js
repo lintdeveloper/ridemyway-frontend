@@ -10,6 +10,9 @@ const {
   GET_REQUEST,
   GET_REQUEST_SUCCESS,
   GET_REQUEST_ERROR,
+  REQUEST_ACTION,
+  REQUEST_ACTION_SUCCESS,
+  REQUEST_ACTION_ERROR,
 } = constants;
 
 
@@ -44,7 +47,6 @@ const rides = (state = intialState, { type, payload }) => {
         loading: true
       };
     case GET_REQUEST_SUCCESS:
-      console.log('payload :', payload);
       return {
         ...state,
         ...payload,
@@ -52,6 +54,23 @@ const rides = (state = intialState, { type, payload }) => {
         isAuthenticated: true,
       };
     case GET_REQUEST_ERROR:
+      return {
+        ...state,
+        loading: false
+      };
+    case REQUEST_ACTION:
+      return {
+        ...state,
+        loading: true
+      };
+    case REQUEST_ACTION_SUCCESS:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+        isAuthenticated: true,
+      };
+    case REQUEST_ACTION_ERROR:
       return {
         ...state,
         loading: false

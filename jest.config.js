@@ -2,7 +2,12 @@ module.exports = {
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.{js,jsx}',
+    '!src/components/**/*.{js,jsx}',
+    '!src/pages/**/*.{js,jsx}',
+    '!src/server/**/*.{js,jsx}',
+    'src/store/**/*.{js,jsx}',
+    'tests/example/**/*.{js,jsx}',
+    '!tests/example/**/?(*.)(spec|test).js?(x)',
   ],
   testMatch: [
     '<rootDir>/tests/**/?(*.)(spec|test).js?(x)',
