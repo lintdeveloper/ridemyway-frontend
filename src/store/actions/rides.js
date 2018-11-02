@@ -302,3 +302,4 @@ const respondToRide = (history, rideId, requestId, status) => (dispatch) => {
 export {
   getRides, getSingleRide, joinRide, createRide, fetchRequest, respondToRide
 };
+
