@@ -11,7 +11,6 @@ const {
 
 
 const intialState = {
-  rideDetails: {},
   loading: true
 };
 
@@ -24,15 +23,13 @@ const singleRide = (state = intialState, { type, payload }) => {
       };
     case GET_SINGLE_RIDE_SUCCESS || CREATE_RIDE_SUCCESS:
       return {
-        ...state,
         ...payload,
         loading: false,
         isAuthenticated: true,
       };
     case GET_SINGLE_RIDE_ERROR || CREATE_RIDE_ERROR:
       return {
-        ...state,
-        loading: true
+        loading: false
       };
     default:
       return state;

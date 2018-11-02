@@ -5,9 +5,13 @@ module.exports = {
     '!src/components/**/*.{js,jsx}',
     '!src/pages/**/*.{js,jsx}',
     '!src/server/**/*.{js,jsx}',
-    'src/store/**/*.{js,jsx}',
-    'tests/example/**/*.{js,jsx}',
-    '!tests/example/**/?(*.)(spec|test).js?(x)',
+    'src/store/actions/**/*.{js,jsx}',
+    '!src/store/reducers/index.js',
+    'src/store/reducers/auth.js',
+    'src/store/reducers/rides.js',
+    'src/store/reducers/rideDetails.js',
+    'src/store/reducers/joinRide.js',
+    '!src/store/index.js'
   ],
   testMatch: [
     '<rootDir>/tests/**/?(*.)(spec|test).js?(x)',
