@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import logo from 'images//Group 2.1.png';
 
 
-const DashboardNavbarComponent = () => (
+const DashboardNavbarComponent = ({ history }) => (
   <nav className="navbar  container-fluid" role="navigation">
     <div className="navbar__header dashboard__navbar__header">
       <span className="js__navbar__toggler DashboardColor--primary" style={{ fontSize: '30px', cursor: 'pointer' }}>&#9776; </span>
@@ -30,9 +30,19 @@ const DashboardNavbarComponent = () => (
 Profile
 
               </Link>
-              <Link to="signin.html" className="DashboardColor--text--grey js__logout">
-                <i className="fas fa-sign-out-alt text--primary" />
+              <Link to="/login" className="DashboardColor--text--grey js__logout">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.clear('user');
+                    history.push('/login');
+                  }}
+                >
+                  <i className="fas fa-sign-out-alt text--primary" />
 logout
+
+                </button>
 
               </Link>
             </div>
@@ -62,4 +72,4 @@ logout
   </nav>
 );
 
-export default DashboardNavbarComponent;
+export default withRouter(DashboardNavbarComponent);

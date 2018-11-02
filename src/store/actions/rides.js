@@ -37,7 +37,7 @@ const getRides = history => (dispatch) => {
   showLoading(dispatch, GET_RIDES);
   return axios.get('/rides', {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token && token}`
     }
   }).then((res) => {
     dispatch({
@@ -68,18 +68,22 @@ const getRides = history => (dispatch) => {
 
 const getSingleRide = (id, history) => (dispatch) => {
   showLoading(dispatch, GET_SINGLE_RIDE);
+  let rideOffer = '';
   return axios.get(`/rides/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  }).then(res => axios.get(`/profile/${res.data.data.rideOffer.rideOwnerId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })).then(result => dispatch({
+  }).then((res) => {
+    rideOffer = res.data.data;
+    return axios.get(`/profile/${res.data.data.rideOffer.rideOwnerId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }).then(result => dispatch({
     type: GET_SINGLE_RIDE_SUCCESS,
     payload: {
-      rideOffer: res.data.data,
+      rideOffer,
       rideownerInfo: result.data.data
     },
   }))
@@ -207,7 +211,6 @@ const fetchRequest = (rideId, history) => (dispatch) => {
           rideOffer: rideOffer.data.data.rideOffer,
           rideownerInfo: result.data.data.user
         });
-        console.log('========================================');
         return dispatch({
           type: GET_REQUEST_SUCCESS,
           payload,
@@ -238,6 +241,7 @@ const fetchRequest = (rideId, history) => (dispatch) => {
                 type: GET_SINGLE_RIDE_ERROR,
                 payload: err.response.data.data.message,
               });
+              console.log('==== here ====');
               return swal('Failed!', err.response.data.data.message, 'warning');
             }
             if (err.response.status === 401) {
@@ -258,7 +262,7 @@ const fetchRequest = (rideId, history) => (dispatch) => {
             type: GET_REQUEST_ERROR,
             payload: err.response.data.data.message,
           });
-          return swal('Failed!', err.response.data.data.message, 'warning');
+          return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/dashboard/rides'));
         }
         if (err.response.status === 401) {
           dispatch({
@@ -302,4 +306,3 @@ const respondToRide = (history, rideId, requestId, status) => (dispatch) => {
 export {
   getRides, getSingleRide, joinRide, createRide, fetchRequest, respondToRide
 };
-
