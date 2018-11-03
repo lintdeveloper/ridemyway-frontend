@@ -1,5 +1,7 @@
-const showLoading = (dispatch, actionType) => dispatch({
-  type: actionType,
-});
+const showLoading = (dispatch, actionType) => {
+  dispatch({
+    type: actionType,
+  });
+};
 
 export default showLoading;

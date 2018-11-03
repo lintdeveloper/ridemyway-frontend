@@ -19,6 +19,9 @@ const {
   GET_REQUEST,
   GET_REQUEST_SUCCESS,
   GET_REQUEST_ERROR,
+  REQUEST_ACTION,
+  REQUEST_ACTION_SUCCESS,
+  REQUEST_ACTION_ERROR,
 
 } = constants;
 let token = null;
@@ -31,39 +34,39 @@ if (user) {
 }
 
 const getRides = history => (dispatch) => {
-  console.log('token :', token);
   showLoading(dispatch, GET_RIDES);
-  axios.get('/rides', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }).then((res) => {
-    dispatch({
-      type: GET_RIDES_SUCCESS,
-      payload: res.data.data,
-    });
-
-    return swal('Success!', res.data.data, 'success');
-  })
-    .catch((err) => {
-      if (err.response) {
-        console.log('err.response :', err.response);
-        if (err.response.status === 404) {
-          dispatch({
-            type: GET_RIDES_ERROR,
-            payload: err.response.data.data.message,
-          });
-          return swal('Failed!', err.response.data.data.message, 'warning');
-        }
-        if (err.response.status === 401) {
-          dispatch({
-            type: GET_RIDES_ERROR,
-            payload: [],
-          });
-          return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
-        }
+  if (token) {
+    axios.get('/rides', {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    });
+    }).then((res) => {
+      dispatch({
+        type: GET_RIDES_SUCCESS,
+        payload: res.data.data,
+      });
+
+      return swal('Success!', res.data.data, 'success');
+    })
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 404) {
+            dispatch({
+              type: GET_RIDES_ERROR,
+              payload: err.response.data.data.message,
+            });
+            return swal('Failed!', err.response.data.data.message, 'warning');
+          }
+          if (err.response.status === 401) {
+            dispatch({
+              type: GET_RIDES_ERROR,
+              payload: [],
+            });
+            return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
+          }
+        }
+      });
+  }
 };
 
 const getSingleRide = (id, history) => (dispatch) => {
@@ -223,9 +226,8 @@ const fetchRequest = (rideId, history) => (dispatch) => {
           Authorization: `Bearer ${token}`
         }
       }).then((result) => {
-        console.log('result :', result);
-        console.log('rideOffer :', rideOffer);
         payload.riderequests.push({
+          id: riderequest.id,
           rideOffer: rideOffer.data.data.rideOffer,
           rideownerInfo: result.data.data.user
         });
@@ -271,7 +273,6 @@ const fetchRequest = (rideId, history) => (dispatch) => {
           }
         });
     });
-    console.log('payload :', payload);
   })
     .catch((err) => {
       if (err.response) {
@@ -292,6 +293,35 @@ const fetchRequest = (rideId, history) => (dispatch) => {
       }
     });
 };
+
+const respondToRide = (history, rideId, requestId, status) => (dispatch) => {
+  showLoading(dispatch, REQUEST_ACTION);
+  axios.put(`/rides/${rideId}/requests/${requestId}`, { status }, {
+    headers: {
+      Authorization: `Bear ${token}`
+    }
+  }).then(res => dispatch({
+    type: REQUEST_ACTION_SUCCESS,
+    payload: res.data.data.message,
+  })).catch((err) => {
+    if (err.response) {
+      if (err.response.status === 400) {
+        dispatch({
+          type: REQUEST_ACTION_ERROR,
+          payload: err.response.data.message,
+        });
+        return swal('Failed!', err.response.data.message, 'warning');
+      }
+      if (err.response.status === 401) {
+        dispatch({
+          type: REQUEST_ACTION_ERROR,
+          payload: err.response.data.message,
+        });
+        return swal('Failed!', err.response.data.message, 'warning').then(() => history.push('/login'));
+      }
+    }
+  });
+};
 export {
-  getRides, getSingleRide, joinRide, createRide, fetchRequest
+  getRides, getSingleRide, joinRide, createRide, fetchRequest, respondToRide
 };

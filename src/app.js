@@ -4,10 +4,10 @@ import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import 'normalize.css/normalize.css';
+import { Provider } from 'react-redux';
 import AppRouter from './routes/AppRouter';
 import { loadSideBar, stickyNav } from './util/stickynav';
 import store from './store';
-import { Provider } from 'react-redux';
 import 'styles/style.css';
 import 'styles/responsive.css';
 
@@ -22,6 +22,6 @@ const App = () => (
 
 const root = document.getElementById('root');
 
-render(<Provider store={store} ><App /></Provider>, root);
+render(<Provider store={store}><App /></Provider>, root);
 loadSideBar();
 stickyNav();

@@ -25,7 +25,7 @@ if (user) {
 
 export const createAccount = (formData, history) => (dispatch) => {
   showLoading(dispatch, CREATE_ACCOUNT);
-  axios.post('/auth/signup', formData)
+  return axios.post('/auth/signup', formData)
     .then((res) => {
       dispatch({
         type: CREATE_ACCOUNT_SUCCESS,
@@ -38,21 +38,28 @@ export const createAccount = (formData, history) => (dispatch) => {
       return swal('Success!', 'Account was created successfully', 'success').then(() => history.push('/dashboard/summary'));
     })
     .catch((err) => {
-      showLoading(dispatch, CREATE_ACCOUNT);
+      // showLoading(dispatch, CREATE_ACCOUNT);
       if (err.response) {
-        dispatch({
-          type: CREATE_ACCOUNT_ERROR,
-          payload: err.response.data.data || err.response.data.data.message,
-        });
-
-        return swal('Failed!', err.response.data.data || err.response.data.data.message, 'warning');
+        if (err.status === 400) {
+          dispatch({
+            type: CREATE_ACCOUNT_ERROR,
+            payload: err.response.data.message,
+          });
+          return swal('Failed!', err.response.data || err.response.data, 'warning');
+        }
+        // dispatch({
+        //   type: CREATE_ACCOUNT_ERROR,
+        //   payload: err.response.data
+        // });
+        // console.log('err.response :', err.response);
+        // return swal('Failed!', err.response.data || err.response.data, 'warning');
       }
     });
 };
 
 export const login = (formData, history) => (dispatch) => {
   showLoading(dispatch, LOGIN);
-  axios.post('/auth/signin', formData)
+  return axios.post('/auth/signin', formData)
     .then((res) => {
       dispatch({
         type: LOGIN_SUCCESS,
@@ -79,18 +86,20 @@ export const login = (formData, history) => (dispatch) => {
 
 export const fetchUser = (userId, history) => (dispatch) => {
   showLoading(dispatch, GET_USER);
+  // console.log('I got here : =============');
   return axios.get(`/profile/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  }).then(res => dispatch({
-    type: GET_USER_SUCCESS,
-    payload: {
-      userInfo: res.data.data.user,
-    },
-  }))
+  }).then((res) => {
+    dispatch({
+      type: GET_USER_SUCCESS,
+      payload: {
+        userInfo: res.data.data.user,
+      },
+    });
+  })
     .catch((err) => {
-      showLoading(dispatch, GET_USER);
       if (err.response) {
         if (err.response.status === 404) {
           dispatch({
@@ -100,6 +109,7 @@ export const fetchUser = (userId, history) => (dispatch) => {
           return swal('Failed!', err.response.data.data.message, 'warning');
         }
         if (err.response.status === 401) {
+          console.log('+++++++++++++++++++++++')
           dispatch({
             type: GET_USER_ERROR,
             payload: [],
