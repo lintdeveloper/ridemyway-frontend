@@ -35,38 +35,36 @@ if (user) {
 
 const getRides = history => (dispatch) => {
   showLoading(dispatch, GET_RIDES);
-  if (token) {
-    axios.get('/rides', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((res) => {
-      dispatch({
-        type: GET_RIDES_SUCCESS,
-        payload: res.data.data,
-      });
-
-      return swal('Success!', res.data.data, 'success');
-    })
-      .catch((err) => {
-        if (err.response) {
-          if (err.response.status === 404) {
-            dispatch({
-              type: GET_RIDES_ERROR,
-              payload: err.response.data.data.message,
-            });
-            return swal('Failed!', err.response.data.data.message, 'warning');
-          }
-          if (err.response.status === 401) {
-            dispatch({
-              type: GET_RIDES_ERROR,
-              payload: [],
-            });
-            return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
-          }
+  return axios.get('/rides', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then((res) => {
+    dispatch({
+      type: GET_RIDES_SUCCESS,
+      payload: res.data.data,
+    });
+    return swal('Success!', res.data.data, 'success');
+  })
+    .catch((err) => {
+      if (err.response) {
+        if (err.response.status === 404) {
+          dispatch({
+            type: GET_RIDES_ERROR,
+            payload: err.response.data.data.message,
+          });
+          return swal('Failed!', err.response.data.data.message, 'warning');
         }
-      });
-  }
+        if (err.response.status === 401) {
+          console.log('err :', err.response.status);
+          dispatch({
+            type: GET_RIDES_ERROR,
+            payload: [],
+          });
+          return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
+        }
+      }
+    });
 };
 
 const getSingleRide = (id, history) => (dispatch) => {
@@ -211,7 +209,7 @@ const fetchRequest = (rideId, history) => (dispatch) => {
   const payload = {};
   payload.riderequests = [];
   showLoading(dispatch, GET_REQUEST);
-  axios.get(`/users//rides/${rideId}/requests`, {
+  return axios.get(`/users//rides/${rideId}/requests`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -231,6 +229,7 @@ const fetchRequest = (rideId, history) => (dispatch) => {
           rideOffer: rideOffer.data.data.rideOffer,
           rideownerInfo: result.data.data.user
         });
+        console.log('========================================');
         return dispatch({
           type: GET_REQUEST_SUCCESS,
           payload,

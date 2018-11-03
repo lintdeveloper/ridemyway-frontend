@@ -30,7 +30,7 @@ describe('Get user action', () => {
     done();
   });
   it('It should fetch a user profile', (done) => {
-    moxios.stubRequest('/profile/-----', { status: 404, res: error.response });
+    moxios.stubRequest('/profile/-----', { status: 404, response: error.response });
     const expectedActions1 = [
       { type: 'GET_USER_ERROR' }
 
@@ -43,10 +43,9 @@ describe('Get user action', () => {
     done();
   });
   it('It should fetch a user profile', (done) => {
-    moxios.stubRequest('/profile/-----', { status: 401, res: error.response });
+    moxios.stubRequest('/profile/-----', { status: 401, response: error.response });
     const expectedActions1 = [
       { type: 'GET_USER_ERROR' }
-
     ];
     const store = mockStore(initialState);
     store.dispatch(actions.fetchUser(69, { push: jest.fn() })).then(() => {
