@@ -25,4 +25,14 @@ const error = {
   }
 };
 
-export { getUser, error };
+const failure = {
+  response: {
+    data: {
+      data: {
+        message: 'Username or password is not correct'
+      }
+    }
+  }
+};
+
+export { getUser, error, failure };

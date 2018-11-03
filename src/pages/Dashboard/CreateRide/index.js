@@ -12,7 +12,10 @@ class CreateRideOffer extends Component {
   
   handleOnSubmit = (event) => {
     event.preventDefault();
+    const { userId } = JSON.parse(localStorage.getItem('user'))
     const { createRide, history } = this.props;
+    const rideOwnerIdInput = document.querySelector("input[type='hidden']");
+    rideOwnerIdInput.value = userId;
     const formData = {}
     const FD = new FormData(event.target);
     for(var pair of FD.entries()) {
