@@ -56,7 +56,6 @@ const getRides = history => (dispatch) => {
           return swal('Failed!', err.response.data.data.message, 'warning');
         }
         if (err.response.status === 401) {
-          console.log('err :', err.response.status);
           dispatch({
             type: GET_RIDES_ERROR,
             payload: [],
@@ -69,41 +68,21 @@ const getRides = history => (dispatch) => {
 
 const getSingleRide = (id, history) => (dispatch) => {
   showLoading(dispatch, GET_SINGLE_RIDE);
-  axios.get(`/rides/${id}`, {
+  return axios.get(`/rides/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  }).then((res) => {
-    axios.get(`/profile/${res.data.data.rideOffer.rideOwnerId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(result => dispatch({
-      type: GET_SINGLE_RIDE_SUCCESS,
-      payload: {
-        rideOffer: res.data.data,
-        rideownerInfo: result.data.data
-      },
-    }))
-      .catch((err) => {
-        if (err.response) {
-          if (err.response.status === 404) {
-            dispatch({
-              type: GET_SINGLE_RIDE_ERROR,
-              payload: err.response.data.data.message,
-            });
-            return swal('Failed!', err.response.data.data.message, 'warning');
-          }
-          if (err.response.status === 401) {
-            dispatch({
-              type: GET_SINGLE_RIDE_ERROR,
-              payload: [],
-            });
-            return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
-          }
-        }
-      });
-  })
+  }).then(res => axios.get(`/profile/${res.data.data.rideOffer.rideOwnerId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })).then(result => dispatch({
+    type: GET_SINGLE_RIDE_SUCCESS,
+    payload: {
+      rideOffer: res.data.data,
+      rideownerInfo: result.data.data
+    },
+  }))
     .catch((err) => {
       if (err.response) {
         if (err.response.status === 404) {
@@ -118,7 +97,7 @@ const getSingleRide = (id, history) => (dispatch) => {
             type: GET_SINGLE_RIDE_ERROR,
             payload: [],
           });
-          return swal('Failed!', err.response.data.data.message, 'warning').then(() => history.push('/login'));
+          return swal('Failed!', err.response.data.message, 'warning').then(() => history.push('/login'));
         }
       }
     });
@@ -164,9 +143,8 @@ const joinRide = (id, rideOwnerId, history) => (dispatch) => {
 };
 
 const createRide = (FormData, history) => (dispatch) => {
-  const rideOwnerIdInput = document.querySelector("input[type='hidden']").value = currentUserId;
   showLoading(dispatch, CREATE_RIDE);
-  axios.post('/users/rides/', FormData, {
+  return axios.post('/users/rides/', FormData, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -324,3 +302,4 @@ const respondToRide = (history, rideId, requestId, status) => (dispatch) => {
 export {
   getRides, getSingleRide, joinRide, createRide, fetchRequest, respondToRide
 };
+
