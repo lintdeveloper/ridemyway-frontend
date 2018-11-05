@@ -161,52 +161,147 @@ describe('Test fetch request actions`', () => {
   afterEach(() => moxios.uninstall());
 
   it('It should create a ride offers', (done) => {
-    moxios.stubRequest('/users/rides', { status: 200, data: singleRide });
+    moxios.stubRequest('/users/rides/1/requests', { status: 200, data: singleRide });
     const input = window.document.createElement('INPUT');
     input.setAttribute('type', 'hidden');
     input.value = 12;
     const expectedActions1 = [
-      { type: 'CREATE_RIDE' }
+      { type: 'GET_REQUEST' }
     ];
     const store = mockStore(initialState);
-    store.dispatch(actions.createRide(singleRide.data.rideOffer, { push: jest.fn() })).then(() => {
+    store.dispatch(actions.fetchRequest(1, { push: jest.fn() })).then(() => {
       expect(store.getActions()).toEqual(expectedActions1);
       done();
     });
     done();
   });
-  it('It should response when the status code is 403', (done) => {
-    moxios.stubRequest('/rides', { status: 403, response: error.response.data });
+  it('It should show authorize message', (done) => {
+    moxios.stubRequest('/users/rides/1/requests', { status: 404, response: failure.response.data.data });
     const expectedActions1 = [
-      { type: 'CREATE_RIDE_ERROR' }
+      { type: 'GET_SINGLE_RIDE_ERROR' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.fetchRequest(1, { push: jest.fn() })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+  it('It should show authorize message', (done) => {
+    moxios.stubRequest('/users/rides/1/requests', { status: 401, response: failure.response.data.data });
+    const expectedActions1 = [
+      { type: 'GET_SINGLE_RIDE_ERROR' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.fetchRequest(1, { push: jest.fn() })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+  it('It should show authorize message', (done) => {
+    moxios.stubRequest('/users/rides/1/requests', { status: 404, response: failure.response.data.data });
+    const expectedActions1 = [
+      { type: 'GET_REQUEST_ERROR' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.fetchRequest(1, { push: jest.fn() })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+  it('It should show authorize message', (done) => {
+    moxios.stubRequest('/users/rides/1/requests', { status: 401, response: failure.response.data.data });
+    const expectedActions1 = [
+      { type: 'GET_REQUEST_ERROR' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.fetchRequest(1, { push: jest.fn() })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+});
 
+describe('Test join riderequest', () => {
+  beforeEach(() => moxios.install());
+  afterEach(() => moxios.uninstall());
+
+  it('It should join a ride successfully', (done) => {
+    moxios.stubRequest('/rides/1/requests/', { status: 200, data: singleRide });
+    const expectedActions1 = [
+      { type: 'JOIN_RIDE' }
     ];
     const store = mockStore(initialState);
-    store.dispatch(actions.createRide(singleRide.data.rideOffer, { push: jest.fn() })).then(() => {
+    store.dispatch(actions.joinRide(1, 2, { push: jest.fn() })).then(() => {
       expect(store.getActions()).toEqual(expectedActions1);
       done();
     });
     done();
   });
   it('It should show authorize message', (done) => {
-    moxios.stubRequest('/rides', { status: 400, response: failure.response.data.data });
+    moxios.stubRequest('/rides/1/requests/', { status: 400, response: failure.response.data.data });
     const expectedActions1 = [
-      { type: 'CREATE_RIDE_ERROR' }
+      { type: 'JOIN_RIDE_ERROR' }
     ];
     const store = mockStore(initialState);
-    store.dispatch(actions.createRide(singleRide.data.rideOffer, { push: jest.fn() })).then(() => {
+    store.dispatch(actions.joinRide(1, 2, { push: jest.fn() })).then(() => {
       expect(store.getActions()).toEqual(expectedActions1);
       done();
     });
     done();
   });
   it('It should show authorize message', (done) => {
-    moxios.stubRequest('/rides', { status: 401, response: failure.response.data.data });
+    moxios.stubRequest('/rides/1/requests/', { status: 401, response: failure.response.data.data });
     const expectedActions1 = [
-      { type: 'CREATE_RIDE_ERROR' }
+      { type: 'JOIN_RIDE_ERROR' }
     ];
     const store = mockStore(initialState);
-    store.dispatch(actions.createRide(singleRide.data.rideOffer, { push: jest.fn() })).then(() => {
+    store.dispatch(actions.joinRide(1, 2, { push: jest.fn() })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+});
+
+describe('Test respond to ride actions', () => {
+  beforeEach(() => moxios.install());
+  afterEach(() => moxios.uninstall());
+
+  it('It should join a ride successfully', (done) => {
+    moxios.stubRequest('/rides/1/requests/2', { status: 200, data: singleRide });
+    const expectedActions1 = [
+      { type: 'REQUEST_ACTION' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.respondToRide({ push: jest.fn() }, 1, 2)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+  it('It should show authorize message', (done) => {
+    moxios.stubRequest('/rides/1/requests/2', { status: 400, response: failure.response.data.data });
+    const expectedActions1 = [
+      { type: 'JOIN_RIDE_ERROR' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.respondToRide({ push: jest.fn() }, 1, 2 )).then(() => {
+      expect(store.getActions()).toEqual(expectedActions1);
+      done();
+    });
+    done();
+  });
+  it('It should show authorize message', (done) => {
+    moxios.stubRequest('/rides/1/requests/2', { status: 401, response: failure.response.data.data });
+    const expectedActions1 = [
+      { type: 'JOIN_RIDE_ERROR' }
+    ];
+    const store = mockStore(initialState);
+    store.dispatch(actions.joinRide({ push: jest.fn() }, 1, 2 )).then(() => {
       expect(store.getActions()).toEqual(expectedActions1);
       done();
     });

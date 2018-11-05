@@ -17,7 +17,7 @@ describe('Get user action', () => {
   afterEach(() => moxios.uninstall());
 
   it('It should fetch a user profile', (done) => {
-    moxios.stubRequest('/profile/69', { status: 200, res: getUser.data });
+    moxios.stubRequest('/profile/69', { status: 200, data: getUser.data });
     const expectedActions1 = [
       { type: 'GET_USER' }
 
@@ -55,7 +55,7 @@ describe('Get user action', () => {
     done();
   });
   it('It should login a user ', async (done) => {
-    moxios.stubRequest('/auth/signin', { status: 200, res: getUser.data });
+    moxios.stubRequest('/auth/signin', { status: 200, data: getUser.data });
     const expectedActions2 = [
       { type: 'LOGIN' }
     ];
@@ -65,7 +65,7 @@ describe('Get user action', () => {
     done();
   });
   it('It should signup a user ', async (done) => {
-    moxios.stubRequest('/auth/signup', { status: 200, res: getUser.data });
+    moxios.stubRequest('/auth/signup', { status: 200, data: getUser.data });
     const expectedActions3 = [
       { type: 'CREATE_ACCOUNT' }
     ];
@@ -87,7 +87,7 @@ describe('Get user action', () => {
     done();
   });
   it('It should not login a user ', (done) => {
-    moxios.stubRequest('/auth/singin', { status: 400, response: error.response });
+    moxios.stubRequest('/auth/signin', { status: 400, response: error.response });
     const expectedActions4 = [
       { type: 'LOGIN' }
     ];

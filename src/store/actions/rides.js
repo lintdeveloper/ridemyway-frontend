@@ -187,7 +187,7 @@ const fetchRequest = (rideId, history) => (dispatch) => {
   const payload = {};
   payload.riderequests = [];
   showLoading(dispatch, GET_REQUEST);
-  return axios.get(`/users//rides/${rideId}/requests`, {
+  return axios.get(`/users/rides/${rideId}/requests`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -273,7 +273,7 @@ const fetchRequest = (rideId, history) => (dispatch) => {
 
 const respondToRide = (history, rideId, requestId, status) => (dispatch) => {
   showLoading(dispatch, REQUEST_ACTION);
-  axios.put(`/rides/${rideId}/requests/${requestId}`, { status }, {
+  return axios.put(`/rides/${rideId}/requests/${requestId}`, { status }, {
     headers: {
       Authorization: `Bear ${token}`
     }
