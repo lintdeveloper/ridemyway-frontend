@@ -37,7 +37,7 @@ const getRides = history => (dispatch) => {
   showLoading(dispatch, GET_RIDES);
   return axios.get('/rides', {
     headers: {
-      Authorization: `Bearer ${token && token}`
+      Authorization: `Bearer ${token}`
     }
   }).then((res) => {
     dispatch({

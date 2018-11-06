@@ -13,7 +13,7 @@ const FrontPageHeaderContent = () => (
           Your day belongs to you
           </div>
           <div className="header__action">
-            <Link className="btn btn--white btn--round" to="signin.html">
+            <Link className="btn btn--white btn--round" to="/login">
             Start Riding Now
             </Link>
           </div>
